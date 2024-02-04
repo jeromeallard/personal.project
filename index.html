@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day Question</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            text-align: center;
+            margin: 0;
+            overflow: hidden;
+            background: url('cute-background.jpg') fixed; /* Replace with your cute background image URL */
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        #cute-paragraph {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #000; /* Black color */
+            font-family: 'Pacifico', cursive; /* Cute cursive font */
+        }
+
+        #cute-paragraph img {
+            width: 100px; /* Adjust the width as needed */
+            height: auto;
+        }
+
+        #question {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #d81b60; /* Dark Pink */
+        }
+
+        button {
+            font-size: 18px;
+            padding: 10px 20px;
+            margin: 10px;
+            background-color: #e57373; /* Light Red */
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #d32f2f; /* Dark Red */
+        }
+
+        #response {
+            font-size: 18px;
+            margin-top: 20px;
+            color: #d81b60; /* Dark Pink */
+        }
+
+        .heart,
+        .broken-heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            font-size: 20px;
+            animation: fall 2s linear infinite;
+        }
+
+        .broken-heart {
+            transform: rotate(180deg); /* Invert the rotation for broken hearts */
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Add the audio element with autoplay, loop, and controls attributes -->
+    <audio autoplay loop controls>
+        <source src="https://drive.google.com/file/d/1aFUZjQJ5Lm_V7HL8tLJiEGsMBvlvWIZx/view" >
+    </audio>
+
+    <div id="cute-paragraph">
+        <img src="your-image-url.jpg" alt="Cute Image">
+        <p>Roses are red</p>
+        <p id="question" style="color: #d81b60;">Will you be my Valentine?</p>
+    </div>
+
+    <button onclick="answerYes()">Yes</button>
+    <button onclick="answerNo()">No</button>
+
+    <div id="response"></div>
+
+    <script>
+        let isAnimationActive = false;
+
+        function answerYes() {
+            document.getElementById("response").innerHTML = "Yay! You're my Valentine! ❤️";
+
+            // Check if the other button's animation is active and stop it
+            if (isAnimationActive) {
+                stopAnimations();
+            }
+
+            // Set the flag to indicate that an animation is active
+            isAnimationActive = true;
+
+            // Create and append falling heart emojis
+            createFallingHearts("❤️");
+        }
+
+        function answerNo() {
+            document.getElementById("response").innerHTML = "Oh no! Maybe next time. 💔";
+
+            // Check if the other button's animation is active and stop it
+            if (isAnimationActive) {
+                stopAnimations();
+            }
+
+            // Set the flag to indicate that an animation is active
+            isAnimationActive = true;
+
+            // Create and append falling broken heart emojis
+            createFallingHearts("💔");
+        }
+
+        function createFallingHearts(emoji) {
+            for (let i = 0; i < 100; i++) {
+                const heart = document.createElement("div");
+                heart.className = (emoji === "❤️") ? "heart" : "broken-heart";
+                heart.innerHTML = emoji;
+                document.body.appendChild(heart);
+
+                // Randomize starting position and animation duration
+                const startPosition = Math.random() * window.innerWidth;
+                const duration = Math.random() * 2 + 1;
+
+                heart.style.left = startPosition + "px";
+                heart.style.animationDuration = duration + "s";
+
+                // Remove the heart after animation completes
+                heart.addEventListener("animationend", () => {
+                    document.body.removeChild(heart);
+
+                    // Check if all animations have ended, then reset the flag
+                    if (document.querySelectorAll(".heart, .broken-heart").length === 0) {
+                        isAnimationActive = false;
+                    }
+                });
+            }
+        }
+
+        function stopAnimations() {
+            // Remove all falling hearts
+            document.querySelectorAll(".heart, .broken-heart").forEach((heart) => {
+                document.body.removeChild(heart);
+            });
+
+            // Reset the flag
+            isAnimationActive = false;
+        }
+    </script>
+</body>
+
+</html>
